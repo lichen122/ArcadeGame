@@ -102,6 +102,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        treasure.update();
     }
    
     /* This function initially draws the "game level", it will then call
@@ -140,11 +141,14 @@ var Engine = (function(global) {
                  * we're using them over and over.
                  */
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.font = "36pt Georgia";
+                ctx.fillText("Score: " + score,25,110);
             }
         }
 
 
         renderEntities();
+
     }
 
     /* This function is called by the render function and is called on each game
@@ -155,11 +159,13 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        treasure.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         player.render();
+
     }
 
     /* This function does nothing but it could have been a good place to
@@ -180,7 +186,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem Green.png',
+        'images/Gem Blue.png',
+        'images/Gem Orange.png'
     ]);
     Resources.onReady(init);
 

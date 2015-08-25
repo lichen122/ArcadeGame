@@ -11,6 +11,24 @@ var COL = 83;
 /** @const {Number} Dimension for tiles width. */
 var score = 0;
 
+var treasureTypes = [
+    {
+        sprite: 'images/Gem Blue.png',
+        value: 1,
+        duration: 5
+    },
+    {
+        sprite: 'images/Gem Green.png',
+        value: 2,
+        duration: 4
+    },
+    {
+        sprite: 'images/Gem Orange.png',
+        value: 3,
+        duration: 3
+    }
+];
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -32,8 +50,8 @@ Enemy.prototype.update = function(dt) {
     // all computers.
      if (this.x >= 500){
      	this.x = -100;
-        this.y = 70+ Math.floor(Math.random()*2.999)*80;
-        this.speed = Math.floor(Math.random()*3.999)*100;
+        this.y = 70+ getRandomNumber(0,2)*80;
+        this.speed = getRandomNumber(0,4)*100;
      } else {
         this.x += this.speed * dt;
      }
@@ -43,7 +61,26 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
-
+//treasure class
+var Treasure = function() {
+	this.type = treasureTypes[getRandomNumber(0,2)] ;
+	this.x = 100*getRandomNumber(0,4);
+	this.y = 80 + 80*getRandomNumber(0,2);
+	this.sprite = this.type.sprite;
+	this.createdAt = Date.now();
+}
+Treasure.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x , this.y);
+};
+Treasure.prototype.update = function() {
+	if((Date.now() - this.createdAt)/1000 >= this.type.duration){
+		treasure = new Treasure();
+	}
+	if(this.x == player.x && this.y == player.y){
+		treasure = new Treasure();
+		score++;
+	}
+}
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -65,6 +102,7 @@ Player.prototype.update = function(){
 Player.prototype.home = function(){
 	this.x = 200;
 	this.y = 400;
+	score--;
 	
 }
 Player.prototype.handleInput = function(e) {	
@@ -87,7 +125,7 @@ Player.prototype.handleInput = function(e) {
 
 var allEnemies = [];
 var player = new Player();
-
+var treasure = new Treasure();
 for(var i = 0;i < 7; i++){
     allEnemies[i] = new Enemy();
 }
