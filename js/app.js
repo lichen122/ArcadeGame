@@ -1,13 +1,3 @@
-//Set
-/** @const {Number} Dimension for tiles height. */
-var ROW_HEIGHT = 83;
-
-/** @const {Number} Dimension for tiles width. */
-var COL_WIDTH = 101;
-
-/** @const {Number} Dimension for tiles height. */
-var COL = 83;
-
 /** @const {Number} Dimension for tiles width. */
 var score = 0;
 
@@ -51,7 +41,7 @@ Enemy.prototype.update = function(dt) {
      if (this.x >= 500){
      	this.x = -100;
         this.y = 70+ getRandomNumber(0,2)*80;
-        this.speed = getRandomNumber(0,4)*100;
+        this.speed = getRandomNumber(1,4)*100;
      } else {
         this.x += this.speed * dt;
      }
@@ -102,12 +92,15 @@ Player.prototype.update = function(){
 Player.prototype.home = function(){
 	this.x = 200;
 	this.y = 400;
-	score--;
-	
 }
 Player.prototype.handleInput = function(e) {	
-	if (e === "up" && this.y >=0){
-		this.y -= 80;
+	if (e === "up" ){
+		if(this.y >=0){
+			this.y -= 80;
+		}
+		if(this.y == 0){
+			this.y = 400;
+		}
 	}
 	else if(e === "down" && this.y <400){
 		this.y += 80;
